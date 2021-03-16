@@ -1,3 +1,3 @@
-interface IDataStoredInToken {
+export interface IDataStoredInToken {
     _id: number;
 }

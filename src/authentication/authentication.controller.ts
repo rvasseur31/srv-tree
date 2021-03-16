@@ -7,6 +7,8 @@ import { EStatus } from "../types/status.enum";
 import { ECode } from "../types/code.enum";
 import { User } from "../user/user.entity";
 import jwt from "jsonwebtoken";
+import { ITokenData } from './token-data.interface';
+import { IDataStoredInToken } from "./data-stored-in-token.interface";
 
 class AuthenticationController implements IBaseController {
     public path = "/auth";
