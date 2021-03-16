@@ -5,6 +5,9 @@ import { ECode } from "../types/code.enum";
 import { EStatus } from "../types/status.enum";
 import IBaseController from "../common/controllers/base.controller.interface";
 import { ContactService } from "./contact.service";
+import { getMailOptions } from "../mail/mail-options";
+import { transporter } from "../mail/transporter";
+import { SentMessageInfo } from "nodemailer";
 
 class ContactController implements IBaseController {
     public path = "/contact";
@@ -24,6 +27,11 @@ class ContactController implements IBaseController {
             ContactService.getInstance()
                 .contact(body.email, body.firstname, body.lastname, body.subject, body.message)
                 .then((contact) => {
+                    transporter.sendMail(getMailOptions(["test@tree.com"], body.subject, body.message), (error: Error, info: SentMessageInfo) => {
+                        if (error) {
+                            return console.log(error);
+                        }
+                    });
                     res.send(new CustomResponse(EStatus.SUCCESS, ECode.OK, "Message successfully sended", contact));
                 })
                 .catch((error) => {
