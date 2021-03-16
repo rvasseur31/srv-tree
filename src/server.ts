@@ -4,12 +4,14 @@ import { createConnection } from "typeorm";
 import App from "./app";
 import config from "./ormconfig";
 import UserController from "./user/user.controller";
+import ContactController from './contact/contact.controller';
 
 createConnection(config)
     .then(async (_) => {
         const app = new App([
             new AuthenticationController(),
-            new UserController()
+            new UserController(),
+            new ContactController()
         ], 5000);
         app.listen();
     })

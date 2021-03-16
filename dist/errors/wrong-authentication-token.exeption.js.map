@@ -1,1 +1,0 @@
-{"version":3,"file":"wrong-authentication-token.exeption.js","sourceRoot":"","sources":["../../src/errors/wrong-authentication-token.exeption.ts"],"names":[],"mappings":";;;AAAA,qDAAiD;AACjD,kDAA2C;AAE3C;;GAEG;AACH,MAAa,iCAAmC,SAAQ,8BAAa;IACjE;;;;OAIG;IACH;QACI,KAAK,CAAC,iBAAK,CAAC,YAAY,EAAE,4BAA4B,CAAC,CAAC;IAC5D,CAAC;CACJ;AATD,8EASC"}

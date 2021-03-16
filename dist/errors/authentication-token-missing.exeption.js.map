@@ -1,1 +1,0 @@
-{"version":3,"file":"authentication-token-missing.exeption.js","sourceRoot":"","sources":["../../src/errors/authentication-token-missing.exeption.ts"],"names":[],"mappings":";;;AAAA,qDAAiD;AACjD,kDAA2C;AAE3C;;GAEG;AACH,MAAa,mCAAqC,SAAQ,8BAAa;IACnE;;;;OAIG;IACH;QACI,KAAK,CAAC,iBAAK,CAAC,YAAY,EAAE,8BAA8B,CAAC,CAAC;IAC9D,CAAC;CACJ;AATD,kFASC"}
