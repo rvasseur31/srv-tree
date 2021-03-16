@@ -5,6 +5,7 @@ import { User } from '../user/user.entity';
 import { getConnection } from "typeorm";
 import { WrongAuthenticationTokenException } from "../errors/wrong-authentication-token.exeption";
 import { AuthenticationTokenMissingException } from "../errors/authentication-token-missing.exeption";
+import { IDataStoredInToken } from "./data-stored-in-token.interface";
 
 export const authenticationMiddleware = async (request: IRequestWithUser, response: Response, next: NextFunction) => {
     const userRepository = getConnection().manager;

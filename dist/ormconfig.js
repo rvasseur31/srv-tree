@@ -3,7 +3,7 @@ const config = {
     type: "mysql",
     host: "localhost",
     port: 3306,
-    username: "root",
+    username: "admin",
     password: "",
     database: "node",
     entities: ["dist/**/*.entity.js"],

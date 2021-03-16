@@ -17,10 +17,12 @@ require("reflect-metadata");
 const typeorm_1 = require("typeorm");
 const app_1 = __importDefault(require("./app"));
 const ormconfig_1 = __importDefault(require("./ormconfig"));
+const user_controller_1 = __importDefault(require("./user/user.controller"));
 typeorm_1.createConnection(ormconfig_1.default)
     .then((_) => __awaiter(void 0, void 0, void 0, function* () {
     const app = new app_1.default([
-        new authentication_controller_1.default()
+        new authentication_controller_1.default(),
+        new user_controller_1.default()
     ], 5000);
     app.listen();
 }))
