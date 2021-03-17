@@ -41,6 +41,14 @@ export class UserService {
     async update(id: number, data: any) {
         try {
             const user: User = await this.userRepository.findOne(User, id);
+            await getConnection()
+                .createQueryBuilder()
+                .update(User)
+                .set({
+                    email: data.email,
+                })
+                .where("id = :id", { id: id })
+                .execute();
             return user;
         } catch (error) {
             throw error;
