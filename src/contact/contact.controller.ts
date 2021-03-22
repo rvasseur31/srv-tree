@@ -22,17 +22,29 @@ class ContactController implements IBaseController {
     }
 
     private contact = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        let customResponse: CustomResponse;
         const body = req.body;
         if (body.email && body.firstname && body.lastname && body.subject && body.message) {
             ContactService.getInstance()
                 .contact(body.email, body.firstname, body.lastname, body.subject, body.message)
                 .then((contact) => {
-                    transporter.sendMail(getMailOptions(["test@tree.com"], body.subject, body.message), (error: Error, info: SentMessageInfo) => {
-                        if (error) {
-                            return console.log(error);
+                    transporter.sendMail(
+                        getMailOptions(
+                            ["test@tree.com"],
+                            "Nouveau message",
+                            { subject: body.subject, message: body.message },
+                            "./templates/contact.handlebars"
+                        ),
+                        (error: Error, info: SentMessageInfo) => {
+                            if (error) {
+                                customResponse = new CustomResponse(EStatus.FAIL, ECode.INTERNAL_SERVER_ERROR, "Email not sended", error);
+                                console.log(error);
+                            } else {
+                                customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "Message successfully sended", contact);
+                            }
                         }
-                    });
-                    res.send(new CustomResponse(EStatus.SUCCESS, ECode.OK, "Message successfully sended", contact));
+                    );
+                    res.send(customResponse);
                 })
                 .catch((error) => {
                     next(error);
