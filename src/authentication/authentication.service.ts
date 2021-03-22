@@ -21,13 +21,16 @@ export class AuthenticationService {
     }
 
     async register(email: string, password: string) {
-        try {
-            const userToCreate: User = new User(email, bcrypt.hashSync(password, 10));
-            const user: User = await this.userRepository.save(userToCreate);
-            user.password = undefined;
-            return user;
-        } catch (error) {
-            throw error;
+        if (Utils.validateEmail(email)) {
+            try {
+                const userToCreate: User = new User(email, bcrypt.hashSync(password, 10));
+                const user: User = await this.userRepository.save(userToCreate);
+                return user;
+            } catch (error) {
+                throw error;
+            }
+        } else {
+            throw new ParamError("Wrong email format");
         }
     }
 
@@ -37,7 +40,6 @@ export class AuthenticationService {
             if (user) {
                 try {
                     if (bcrypt.compareSync(password, user.password)) {
-                        user.password = undefined;
                         return user;
                     } else {
                         throw new AuthError("Password doesn't match");
@@ -50,6 +52,40 @@ export class AuthenticationService {
             }
         } else {
             throw new ParamError("Wrong email format");
+        }
+    }
+
+    async resetPassword(email: string) {
+        if (Utils.validateEmail(email)) {
+            const user: User = await this.userRepository.findOne(User, { email: email });
+            if (user) {
+                await getConnection()
+                    .createQueryBuilder()
+                    .update(User)
+                    .set({
+                        resetPasswordToken: Math.random().toString(36),
+                    })
+                    .where("id = :id", { id: user.id })
+                    .execute();
+                return await this.userRepository.findOne(User, { email: email });
+            }
+        } else {
+            throw new ParamError("Wrong email format");
+        }
+    }
+
+    async updatePassword(token: string, password: string) {
+        const user: User = await this.userRepository.findOne(User, { resetPasswordToken: token });
+        if (user) {
+            await getConnection()
+                .createQueryBuilder()
+                .update(User)
+                .set({
+                    password: password,
+                })
+                .where("id = :id", { id: user.id })
+                .execute();
+            return user;
         }
     }
 }

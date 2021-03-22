@@ -9,8 +9,12 @@ export class User implements IUser {
     @Column({ unique: true })
     public email: string;
 
-    @Column()
+    // Hide password on select
+    @Column({ select: false })
     public password: string;
+
+    @Column()
+    public resetPasswordToken: string;
 
     public constructor(email?: string, password?: string) {
         this.email = email;
