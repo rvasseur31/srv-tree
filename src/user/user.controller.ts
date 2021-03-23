@@ -5,7 +5,6 @@ import { CustomResponse } from "../common/custom-response";
 import { EStatus } from "../types/status.enum";
 import { ECode } from "../types/code.enum";
 import { User } from "../user/user.entity";
-import jwt from "jsonwebtoken";
 import { UserService } from "./user.service";
 
 class UserController implements IBaseController {

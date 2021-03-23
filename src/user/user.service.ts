@@ -1,9 +1,5 @@
-import { AuthError } from "../errors/authentication.error";
-import { ParamError } from "../errors/param.error";
 import { User } from "../user/user.entity";
-import bcrypt from "bcrypt";
 import { EntityManager, getConnection } from "typeorm";
-import { Utils } from "../common/utils";
 
 export class UserService {
     private static INSTANCE: UserService;

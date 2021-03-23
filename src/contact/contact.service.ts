@@ -1,5 +1,3 @@
-import { AuthError } from "../errors/authentication.error";
-import { ParamError } from "../errors/param.error";
 import { EntityManager, getConnection } from "typeorm";
 import { Contact } from "./contact.entity";
 
