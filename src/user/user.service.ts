@@ -22,7 +22,7 @@ export class UserService {
 
     async findAll() {
         try {
-            const users: User[] = await this.userRepository.find(User);
+            const users: User[] = await this.userRepository.find(User, { relations: ["donations"] });
             return users;
         } catch (error) {
             throw error;
