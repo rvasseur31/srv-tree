@@ -35,6 +35,7 @@ export class User implements IUser {
 
     @Column({
         nullable: true,
+        default: 0
     })
     public plantedTree: number;
 

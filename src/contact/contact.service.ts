@@ -5,10 +5,10 @@ import { Contact } from "./contact.entity";
 
 export class ContactService {
     private static INSTANCE: ContactService;
-    private contactRepository: EntityManager;
+    private manager: EntityManager;
 
     private constructor() {
-        this.contactRepository = getConnection().manager;
+        this.manager = getConnection().manager;
     }
 
     public static getInstance(): ContactService {
@@ -20,6 +20,6 @@ export class ContactService {
 
     async contact(email: string, firstname: string, lastname: string, subject: string, content: string) {
         const message: Contact = new Contact(email, firstname, lastname, subject, content);
-        return await this.contactRepository.save(message);
+        return await this.manager.save(message);
     }
 }

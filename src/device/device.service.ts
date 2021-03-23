@@ -1,14 +1,16 @@
 import { EntityManager, getConnection } from "typeorm";
-import { DeviceState } from "./device-state.enum";
-import { DeviceType } from "./device-type.enum";
-import { Device } from './device.entity';
+import { User } from "../user/user.entity";
+import { UserService } from "../user/user.service";
+import { DeviceState, DeviceStateValue } from "./device-state.enum";
+import { DeviceType, DeviceTypePrice } from "./device-type.enum";
+import { Device } from "./device.entity";
 
 export class DeviceService {
     private static INSTANCE: DeviceService;
-    private deviceRepository: EntityManager;
+    private manager: EntityManager;
 
     private constructor() {
-        this.deviceRepository = getConnection().manager;
+        this.manager = getConnection().manager;
     }
 
     public static getInstance(): DeviceService {
@@ -18,8 +20,11 @@ export class DeviceService {
         return this.INSTANCE;
     }
 
-    async addDevice(name: string, brand: string, year: number, state: DeviceState, type: DeviceType) {
-        const device: Device = new Device(name, brand, year, state, type);
-        return await this.deviceRepository.save(device);
+    async addDevice(name: string, brand: string, year: number, state: DeviceState, type: DeviceType, user_id: number) {
+        const user: User = await this.manager.findOne(User, user_id);
+        const device: Device = new Device(name, brand, year, state, type, user);
+        await this.manager.save(device)
+        const plantedTree = user.plantedTree + Math.trunc(DeviceTypePrice.get(type) * DeviceStateValue.get(state) / 15);
+        return await UserService.getInstance().update(user_id, {plantedTree});
     }
 }

@@ -7,10 +7,10 @@ import { Utils } from "../common/utils";
 
 export class AuthenticationService {
     private static INSTANCE: AuthenticationService;
-    private userRepository: EntityManager;
+    private mananager: EntityManager;
 
     private constructor() {
-        this.userRepository = getConnection().manager;
+        this.mananager = getConnection().manager;
     }
 
     public static getInstance(): AuthenticationService {
@@ -24,7 +24,7 @@ export class AuthenticationService {
         if (Utils.validateEmail(email)) {
             try {
                 const userToCreate: User = new User(email, bcrypt.hashSync(password, 10));
-                const user: User = await this.userRepository.save(userToCreate);
+                const user: User = await this.mananager.save(userToCreate);
                 return user;
             } catch (error) {
                 throw error;
@@ -36,7 +36,7 @@ export class AuthenticationService {
 
     async login(email: string, password: string) {
         if (Utils.validateEmail(email)) {
-            const user: User = await this.userRepository.findOne(User, { email });
+            const user: User = await this.mananager.findOne(User, { email });
             if (user) {
                 try {
                     if (bcrypt.compareSync(password, user.password)) {
@@ -57,7 +57,7 @@ export class AuthenticationService {
 
     async resetPassword(email: string) {
         if (Utils.validateEmail(email)) {
-            const user: User = await this.userRepository.findOne(User, { email });
+            const user: User = await this.mananager.findOne(User, { email });
             if (user) {
                 await getConnection()
                     .createQueryBuilder()
@@ -67,7 +67,7 @@ export class AuthenticationService {
                     })
                     .where("id = :id", { id: user.id })
                     .execute();
-                return await this.userRepository.findOne(User, { email });
+                return await this.mananager.findOne(User, { email });
             }
         } else {
             throw new ParamError("Wrong email format");
@@ -75,7 +75,7 @@ export class AuthenticationService {
     }
 
     async updatePassword(token: string, password: string) {
-        const user: User = await this.userRepository.findOne(User, { resetPasswordToken: token });
+        const user: User = await this.mananager.findOne(User, { resetPasswordToken: token });
         if (user) {
             await getConnection()
                 .createQueryBuilder()

@@ -28,10 +28,12 @@ export class Device {
     })
     user: User;
 
-    public constructor(name: string, brand: string, year: number, state: DeviceState, type: DeviceType) {
+    public constructor(name: string, brand: string, year: number, state: DeviceState, type: DeviceType, user: User) {
         this.name = name;
         this.brand = brand;
         this.year = year;
         this.state = state;
+        this.type = type;
+        this.user = user;
     }
 }

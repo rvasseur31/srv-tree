@@ -1,6 +1,12 @@
 import { CustomResponse } from "../common/custom-response";
 import express from "express";
 import IBaseController from "../common/controllers/base.controller.interface";
+import { DeviceService } from "./device.service";
+import { Device } from "./device.entity";
+import { EStatus } from "../types/status.enum";
+import { ECode } from "../types/code.enum";
+import { ParamError } from "../errors/param.error";
+import { User } from "../user/user.entity";
 
 class DeviceController implements IBaseController {
     public path = "/device";
@@ -15,8 +21,21 @@ class DeviceController implements IBaseController {
     }
 
     private addDevice = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        let customResponse: CustomResponse;
         const body = req.body;
+        let customResponse: CustomResponse;
+        if (body.name && body.brand && body.year && body.state && body.type && body.user_id) {
+            DeviceService.getInstance()
+                .addDevice(body.name, body.brand, body.year, body.state, body.type, body.user_id)
+                .then((user: User) => {
+                    customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "device sent", user);
+                    res.send(customResponse);
+                })
+                .catch((error) => {
+                    next(error);
+                });
+        } else {
+            next(new ParamError("id_user, name, brand, year, state or type must be specified"));
+        }
     };
 }
 

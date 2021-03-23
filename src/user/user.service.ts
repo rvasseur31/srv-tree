@@ -7,10 +7,10 @@ import { Utils } from "../common/utils";
 
 export class UserService {
     private static INSTANCE: UserService;
-    private userRepository: EntityManager;
+    private manager: EntityManager;
 
     private constructor() {
-        this.userRepository = getConnection().manager;
+        this.manager = getConnection().manager;
     }
 
     public static getInstance(): UserService {
@@ -22,7 +22,7 @@ export class UserService {
 
     async findAll() {
         try {
-            const users: User[] = await this.userRepository.find(User, { relations: ["donations"] });
+            const users: User[] = await this.manager.find(User, { relations: ["donations"] });
             return users;
         } catch (error) {
             throw error;
@@ -31,7 +31,7 @@ export class UserService {
 
     async findOne(id: number) {
         try {
-            const user: User = await this.userRepository.findOne(User, id, { relations: ["donations"] });
+            const user: User = await this.manager.findOne(User, id, { relations: ["donations"] });
             return user;
         } catch (error) {
             throw error;
@@ -40,15 +40,8 @@ export class UserService {
 
     async update(id: number, data: any) {
         try {
-            const user: User = await this.userRepository.findOne(User, id);
-            await getConnection()
-                .createQueryBuilder()
-                .update(User)
-                .set({
-                    email: data.email,
-                })
-                .where("id = :id", { id })
-                .execute();
+            const user: User = await this.manager.findOne(User, id);
+            await this.manager.update(User, id, data)
             return user;
         } catch (error) {
             throw error;
@@ -57,7 +50,7 @@ export class UserService {
 
     async delete(id: number) {
         try {
-            return await this.userRepository.delete(User, id);
+            return await this.manager.delete(User, id);
         } catch (error) {
             throw error;
         }
