@@ -42,7 +42,7 @@ export class UserService {
         try {
             const user: User = await this.manager.findOne(User, id);
             await this.manager.update(User, id, data)
-            return user;
+            return await this.manager.findOne(User, id);
         } catch (error) {
             throw error;
         }

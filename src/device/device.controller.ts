@@ -2,7 +2,6 @@ import { CustomResponse } from "../common/custom-response";
 import express from "express";
 import IBaseController from "../common/controllers/base.controller.interface";
 import { DeviceService } from "./device.service";
-import { Device } from "./device.entity";
 import { EStatus } from "../types/status.enum";
 import { ECode } from "../types/code.enum";
 import { ParamError } from "../errors/param.error";

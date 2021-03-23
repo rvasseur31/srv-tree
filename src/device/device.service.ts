@@ -24,7 +24,9 @@ export class DeviceService {
         const user: User = await this.manager.findOne(User, user_id);
         const device: Device = new Device(name, brand, year, state, type, user);
         await this.manager.save(device)
-        const plantedTree = user.plantedTree + Math.trunc(DeviceTypePrice.get(type) * DeviceStateValue.get(state) / 15);
+        const deviceYear =  new Date().getFullYear() - year;
+        const deviceYearPercentageToRemove = deviceYear > 8 ? 0.2 : 1 - deviceYear * 0.1;
+        const plantedTree = user.plantedTree + Math.trunc(DeviceTypePrice.get(type) * deviceYearPercentageToRemove * DeviceStateValue.get(state) / 15);
         return await UserService.getInstance().update(user_id, {plantedTree});
     }
 }
