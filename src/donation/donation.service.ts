@@ -4,10 +4,10 @@ import { Donation } from "./donation.entity";
 
 export class DonationService {
     private static INSTANCE: DonationService;
-    private userRepository: EntityManager;
+    private repository: EntityManager;
 
     private constructor() {
-        this.userRepository = getConnection().manager;
+        this.repository = getConnection().manager;
     }
 
     public static getInstance(): DonationService {
@@ -19,10 +19,10 @@ export class DonationService {
 
     async newDonation(id: number, amount: number) {
         try {
+            const user: User = await this.repository.findOne(User, id);
             const dateTime = new Date();
-            const donation: Donation = new Donation(amount, dateTime);
-            const user: User = await this.userRepository.findOne(User, id);
-            return user;
+            const donation: Donation = new Donation(amount, dateTime, user);
+            return await this.repository.save(donation);
         } catch (error) {
             throw error;
         }

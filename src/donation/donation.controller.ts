@@ -6,6 +6,7 @@ import { DonationService } from "./donation.service";
 import { EStatus } from "../types/status.enum";
 import { ECode } from "../types/code.enum";
 import { User } from "../user/user.entity";
+import { Donation } from "./donation.entity";
 
 class DonationController implements IBaseController {
     public path = "/donation";
@@ -24,15 +25,15 @@ class DonationController implements IBaseController {
         if (req.body.id && req.body.amount) {
             DonationService.getInstance()
                 .newDonation(req.body.id, req.body.amount)
-                .then((user: User) => {
-                    customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "User fetched", user);
+                .then((donation: Donation) => {
+                    customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "donation done", donation);
                     res.send(customResponse);
                 })
                 .catch((error) => {
                     next(error);
                 });
         } else {
-            next(new ParamError("id must be specified"));
+            next(new ParamError("id or amount must be specified"));
         }
     };
 }

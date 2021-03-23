@@ -31,7 +31,7 @@ export class UserService {
 
     async findOne(id: number) {
         try {
-            const user: User = await this.userRepository.findOne(User, id);
+            const user: User = await this.userRepository.findOne(User, id, { relations: ["donations"] });
             return user;
         } catch (error) {
             throw error;

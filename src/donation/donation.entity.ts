@@ -17,8 +17,9 @@ export class Donation implements IDonation {
     @ManyToOne(() => User, user => user.donations)
     user: User;
 
-    public constructor(amount: number, dateTime: Date) {
+    public constructor(amount: number, dateTime: Date, user: User) {
         this.amount = amount;
         this.dateTime = dateTime;
+        this.user = user;
     }
 }
