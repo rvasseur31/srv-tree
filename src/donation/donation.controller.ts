@@ -6,7 +6,6 @@ import { DonationService } from "./donation.service";
 import { EStatus } from "../types/status.enum";
 import { ECode } from "../types/code.enum";
 import { User } from "../user/user.entity";
-import { Donation } from "./donation.entity";
 
 class DonationController implements IBaseController {
     public path = "/donation";
@@ -22,11 +21,11 @@ class DonationController implements IBaseController {
 
     private donation = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         let customResponse: CustomResponse;
-        if (req.body.id && req.body.amount) {
+        if (req.body.user_id && req.body.amount) {
             DonationService.getInstance()
-                .newDonation(req.body.id, req.body.amount)
-                .then((donation: Donation) => {
-                    customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "donation done", donation);
+                .newDonation(req.body.user_id, req.body.amount)
+                .then((user: User) => {
+                    customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "donation done", user);
                     res.send(customResponse);
                 })
                 .catch((error) => {
