@@ -6,6 +6,7 @@ import { DonationService } from "./donation.service";
 import { EStatus } from "../types/status.enum";
 import { ECode } from "../types/code.enum";
 import { User } from "../user/user.entity";
+import { authenticationMiddleware } from '../authentication/authentication.middleware';
 
 class DonationController implements IBaseController {
     public path = "/donation";
@@ -16,6 +17,7 @@ class DonationController implements IBaseController {
     }
 
     private initializeRoutes() {
+        this.router.use(authenticationMiddleware)
         this.router.post(`${this.path}/`, this.donation);
     }
 

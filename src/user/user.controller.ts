@@ -6,6 +6,7 @@ import { EStatus } from "../types/status.enum";
 import { ECode } from "../types/code.enum";
 import { User } from "../user/user.entity";
 import { UserService } from "./user.service";
+import { authenticationMiddleware } from '../authentication/authentication.middleware';
 
 class UserController implements IBaseController {
     public path = "/user";
@@ -16,6 +17,7 @@ class UserController implements IBaseController {
     }
 
     private initializeRoutes() {
+        this.router.use(authenticationMiddleware)
         this.router.get(`${this.path}`, this.findAll);
         this.router.get(`${this.path}/one`, this.findOne);
         this.router.put(`${this.path}/update`, this.update);

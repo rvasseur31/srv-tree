@@ -6,6 +6,7 @@ import { EStatus } from "../types/status.enum";
 import { ECode } from "../types/code.enum";
 import { ParamError } from "../errors/param.error";
 import { User } from "../user/user.entity";
+import { authenticationMiddleware } from "../authentication/authentication.middleware";
 
 class DeviceController implements IBaseController {
     public path = "/device";
@@ -16,6 +17,7 @@ class DeviceController implements IBaseController {
     }
 
     private initializeRoutes() {
+        this.router.use(authenticationMiddleware)
         this.router.post(`${this.path}/add-device`, this.addDevice);
     }
 
