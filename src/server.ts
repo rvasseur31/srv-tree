@@ -7,6 +7,7 @@ import UserController from "./user/user.controller";
 import ContactController from './contact/contact.controller';
 import DonationController from "./donation/donation.controller";
 import DeviceController from './device/device.controller';
+import TreeController from "./tree/tree.controller";
 
 createConnection(config)
     .then(async (_) => {
@@ -15,7 +16,8 @@ createConnection(config)
             new UserController(),
             new ContactController(),
             new DonationController(),
-            new DeviceController()
+            new DeviceController(),
+            new TreeController()
         ], 5000);
         app.listen();
     })
