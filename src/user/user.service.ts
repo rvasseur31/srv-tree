@@ -47,7 +47,7 @@ export class UserService {
                 .set({
                     email: data.email,
                 })
-                .where("id = :id", { id: id })
+                .where("id = :id", { id })
                 .execute();
             return user;
         } catch (error) {

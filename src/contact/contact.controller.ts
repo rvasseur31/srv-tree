@@ -42,15 +42,15 @@ class ContactController implements IBaseController {
                             } else {
                                 customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "Message successfully sended", contact);
                             }
+                            res.send(customResponse);
                         }
                     );
-                    res.send(customResponse);
                 })
                 .catch((error) => {
                     next(error);
                 });
         } else {
-            next(new ParamError("Email and password have to be specified"));
+            next(new ParamError("All params have to be specified"));
         }
     };
 }

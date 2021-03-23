@@ -11,7 +11,8 @@
     "watch-typescript": "npm run copy-files && tsc -w",
     "watch-node": "nodemon dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "copy-files": "yes | cp -R ./src/mail/templates ./dist/mail/templates"
+    "copy-files": "npm run clean-mail-template && cp -R ./src/mail/templates ./dist/mail/templates",
+    "clean-mail-template": "rm -rf dist/mail/templates"
   },
   "author": "",
   "license": "ISC",

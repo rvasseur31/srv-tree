@@ -7,7 +7,7 @@ export const getMailOptions = (to: string[], subject: string, payload: any, temp
     return {
         from: '"Admin" <admin@tree.com>',
         to: convertArrayToString(to),
-        subject: subject,
+        subject,
         html: htmlMail(payload),
     };
 };

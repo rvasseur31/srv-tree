@@ -82,7 +82,7 @@ class AuthenticationController implements IBaseController {
                         getMailOptions(
                             ["test@tree.com"],
                             "Changement de mot de passe",
-                            { link: "http://google.com" },
+                            { link: `http://localhost:4200/reset-password?token=${user.resetPasswordToken}` },
                             "./templates/requestResetPassword.handlebars"
                         ),
                         (error: Error, info: SentMessageInfo) => {
@@ -114,7 +114,7 @@ class AuthenticationController implements IBaseController {
                         getMailOptions(
                             ["test@tree.com"],
                             "Changement de mot de passe",
-                            { link: "http://google.com" },
+                            { name: user.email },
                             "./templates/requestResetPassword.handlebars"
                         ),
                         (error: Error, info: SentMessageInfo) => {

@@ -1,11 +1,10 @@
 import express from "express";
-import cookieParser from 'cookie-parser'; 
+import cookieParser from 'cookie-parser';
 import IBaseController from "./common/controllers/base.controller.interface";
 import { errorMiddleware } from './errors/middlewares/error.middleware';
 import { CustomResponse } from './common/custom-response';
 import { EStatus } from './types/status.enum';
 import { ECode } from './types/code.enum';
-import { authenticationMiddleware } from './authentication/authentication.middleware';
 
 class App {
     public app: express.Application;
@@ -22,7 +21,7 @@ class App {
 
     private initializeMiddlewares() {
         this.app.use(express.json());
-        this.app.use(cookieParser());        
+        this.app.use(cookieParser());
     }
 
     private initializeApiControllers(controllers: IBaseController[]) {
@@ -31,7 +30,7 @@ class App {
         })
         controllers.forEach((controller: IBaseController) => {
             this.app.use("/api/", controller.router);
-            
+
         });
     }
 

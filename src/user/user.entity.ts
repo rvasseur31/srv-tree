@@ -14,6 +14,9 @@ export class User implements IUser {
     public password: string;
 
     @Column()
+    public token: string;
+
+    @Column()
     public resetPasswordToken: string;
 
     public constructor(email?: string, password?: string) {

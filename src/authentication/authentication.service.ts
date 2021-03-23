@@ -36,7 +36,7 @@ export class AuthenticationService {
 
     async login(email: string, password: string) {
         if (Utils.validateEmail(email)) {
-            const user: User = await this.userRepository.findOne(User, { email: email });
+            const user: User = await this.userRepository.findOne(User, { email });
             if (user) {
                 try {
                     if (bcrypt.compareSync(password, user.password)) {
@@ -57,7 +57,7 @@ export class AuthenticationService {
 
     async resetPassword(email: string) {
         if (Utils.validateEmail(email)) {
-            const user: User = await this.userRepository.findOne(User, { email: email });
+            const user: User = await this.userRepository.findOne(User, { email });
             if (user) {
                 await getConnection()
                     .createQueryBuilder()
@@ -67,7 +67,7 @@ export class AuthenticationService {
                     })
                     .where("id = :id", { id: user.id })
                     .execute();
-                return await this.userRepository.findOne(User, { email: email });
+                return await this.userRepository.findOne(User, { email });
             }
         } else {
             throw new ParamError("Wrong email format");
@@ -81,7 +81,7 @@ export class AuthenticationService {
                 .createQueryBuilder()
                 .update(User)
                 .set({
-                    password: password,
+                    password,
                 })
                 .where("id = :id", { id: user.id })
                 .execute();
