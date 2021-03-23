@@ -1,5 +1,6 @@
 import { EntityManager, getConnection } from "typeorm";
 import { DeviceState } from "./device-state.enum";
+import { DeviceType } from "./device-type.enum";
 import { Device } from './device.entity';
 
 export class DeviceService {
@@ -17,8 +18,8 @@ export class DeviceService {
         return this.INSTANCE;
     }
 
-    async addDevice(name: string, brand: string, year: number, state: DeviceState) {
-        const device: Device = new Device(name, brand, year, state);
+    async addDevice(name: string, brand: string, year: number, state: DeviceState, type: DeviceType) {
+        const device: Device = new Device(name, brand, year, state, type);
         return await this.deviceRepository.save(device);
     }
 }
