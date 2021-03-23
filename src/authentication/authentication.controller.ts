@@ -53,7 +53,7 @@ class AuthenticationController implements IBaseController {
         if (req.body.email && req.body.password) {
             AuthenticationService.getInstance()
                 .login(req.body.email, req.body.password)
-                .then((user) => {
+                .then((user: User) => {
                     customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "User successfully logged", user);
                     const tokenData = this.createToken(user);
                     res.setHeader("Set-Cookie", [this.createCookie(tokenData)]);
