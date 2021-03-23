@@ -6,12 +6,11 @@ import { CustomResponse } from "../common/custom-response";
 import { EStatus } from "../types/status.enum";
 import { ECode } from "../types/code.enum";
 import { User } from "../user/user.entity";
-import jwt from "jsonwebtoken";
 import { ITokenData } from "./token-data.interface";
-import { IDataStoredInToken } from "./data-stored-in-token.interface";
 import { transporter } from "../mail/transporter";
 import { getMailOptions } from "../mail/mail-options";
 import { SentMessageInfo } from "nodemailer";
+import { UserService } from "../user/user.service";
 
 class AuthenticationController implements IBaseController {
     public path = "/auth";
@@ -34,10 +33,11 @@ class AuthenticationController implements IBaseController {
         if (req.body.email && req.body.password) {
             AuthenticationService.getInstance()
                 .register(req.body.email, req.body.password)
-                .then((user) => {
+                .then(async (user) => {
                     customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "User successfully created", user);
-                    const tokenData = this.createToken(user);
+                    const tokenData = AuthenticationService.getInstance().createToken(user);
                     res.setHeader("Set-Cookie", [this.createCookie(tokenData)]);
+                    await UserService.getInstance().update(user.id, {token : tokenData.token})
                     res.send(customResponse);
                 })
                 .catch((error) => {
@@ -53,10 +53,11 @@ class AuthenticationController implements IBaseController {
         if (req.body.email && req.body.password) {
             AuthenticationService.getInstance()
                 .login(req.body.email, req.body.password)
-                .then((user: User) => {
+                .then(async (user: User) => {
                     customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "User successfully logged", user);
-                    const tokenData = this.createToken(user);
+                    const tokenData = AuthenticationService.getInstance().createToken(user);
                     res.setHeader("Set-Cookie", [this.createCookie(tokenData)]);
+                    await UserService.getInstance().update(user.id, {token : tokenData.token})
                     res.send(customResponse);
                 })
                 .catch((error) => {
@@ -135,18 +136,6 @@ class AuthenticationController implements IBaseController {
             next(new ParamError("Email and password have to be specified"));
         }
     };
-
-    private createToken(user: User): ITokenData {
-        const expiresIn = 60 * 60; // an hour
-        const secret = "Passw0rd";
-        const dataStoredInToken: IDataStoredInToken = {
-            _id: user.id,
-        };
-        return {
-            expiresIn,
-            token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
-        };
-    }
 
     private createCookie(tokenData: ITokenData) {
         return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`;

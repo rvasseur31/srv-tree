@@ -2,8 +2,12 @@ import { AuthError } from "../errors/authentication.error";
 import { ParamError } from "../errors/param.error";
 import { User } from "../user/user.entity";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { EntityManager, getConnection } from "typeorm";
 import { Utils } from "../common/utils";
+import { UserService } from '../user/user.service';
+import { ITokenData } from "./token-data.interface";
+import { IDataStoredInToken } from "./data-stored-in-token.interface";
 
 export class AuthenticationService {
     private static INSTANCE: AuthenticationService;
@@ -59,15 +63,9 @@ export class AuthenticationService {
         if (Utils.validateEmail(email)) {
             const user: User = await this.mananager.findOne(User, { email });
             if (user) {
-                await getConnection()
-                    .createQueryBuilder()
-                    .update(User)
-                    .set({
-                        resetPasswordToken: Math.random().toString(36),
-                    })
-                    .where("id = :id", { id: user.id })
-                    .execute();
-                return await this.mananager.findOne(User, { email });
+                return UserService.getInstance().update(user.id, {
+                    resetPasswordToken: this.createToken(user).token,
+                });
             }
         } else {
             throw new ParamError("Wrong email format");
@@ -87,5 +85,17 @@ export class AuthenticationService {
                 .execute();
             return user;
         }
+    }
+
+    public createToken(user: User): ITokenData {
+        const expiresIn = 60 * 60; // an hour
+        const secret = "Passw0rd";
+        const dataStoredInToken: IDataStoredInToken = {
+            _id: user.id,
+        };
+        return {
+            expiresIn,
+            token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
+        };
     }
 }
