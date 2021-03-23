@@ -2,6 +2,7 @@ import { IUser } from "./user.interface";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserRole } from "./user-role.enum";
 import { Donation } from "../donation/donation.entity";
+import { Device } from '../device/device.entity';
 
 @Entity()
 export class User implements IUser {
@@ -54,6 +55,9 @@ export class User implements IUser {
         nullable: true,
     })
     public resetPasswordToken: string;
+
+    @OneToMany(type => Device, device => device.user)
+    devices: Device[];
 
     public constructor(email?: string, password?: string) {
         this.email = email;

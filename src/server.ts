@@ -6,6 +6,7 @@ import config from "./ormconfig";
 import UserController from "./user/user.controller";
 import ContactController from './contact/contact.controller';
 import DonationController from "./donation/donation.controller";
+import DeviceController from './device/device.controller';
 
 createConnection(config)
     .then(async (_) => {
@@ -13,7 +14,8 @@ createConnection(config)
             new AuthenticationController(),
             new UserController(),
             new ContactController(),
-            new DonationController()
+            new DonationController(),
+            new DeviceController()
         ], 5000);
         app.listen();
     })
