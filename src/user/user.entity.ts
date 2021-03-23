@@ -1,6 +1,7 @@
 import { IUser } from "./user.interface";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserRole } from "./user-role.enum";
+import { Donation } from "../donation/donation.entity";
 
 @Entity()
 export class User implements IUser {
@@ -35,6 +36,9 @@ export class User implements IUser {
         nullable: true,
     })
     public plantedTree: number;
+
+    @OneToMany(() => Donation, donation => donation.user)
+    donations: Donation[];
 
     @Column()
     public password: string;
