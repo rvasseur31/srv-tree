@@ -2,14 +2,15 @@ import AuthenticationController from "./authentication/authentication.controller
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import App from "./app";
-import config from "./ormconfig";
+import { typeORMConfig } from "./ormconfig";
 import UserController from "./user/user.controller";
 import ContactController from './contact/contact.controller';
 import DonationController from "./donation/donation.controller";
 import DeviceController from './device/device.controller';
 import TreeController from "./tree/tree.controller";
+import { config } from './common/environment/config';
 
-createConnection(config)
+createConnection(typeORMConfig)
     .then(async (_) => {
         const app = new App([
             new AuthenticationController(),
@@ -18,7 +19,7 @@ createConnection(config)
             new DonationController(),
             new DeviceController(),
             new TreeController()
-        ], 5000);
+        ], config.app.APP_PORT);
         app.listen();
     })
     .catch((error) => {
