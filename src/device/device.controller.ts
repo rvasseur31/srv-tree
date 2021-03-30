@@ -17,8 +17,7 @@ class DeviceController implements IBaseController {
     }
 
     private initializeRoutes() {
-        this.router.use(authenticationMiddleware)
-        this.router.post(`${this.path}/add-device`, this.addDevice);
+        this.router.post(`${this.path}/add-device`, authenticationMiddleware, this.addDevice);
     }
 
     private addDevice = async (req: express.Request, res: express.Response, next: express.NextFunction) => {

@@ -17,11 +17,10 @@ class UserController implements IBaseController {
     }
 
     private initializeRoutes() {
-        this.router.use(authenticationMiddleware)
-        this.router.get(`${this.path}`, this.findAll);
-        this.router.get(`${this.path}/one`, this.findOne);
-        this.router.put(`${this.path}/update`, this.update);
-        this.router.delete(`${this.path}`, this.delete);
+        this.router.get(`${this.path}`, authenticationMiddleware, this.findAll);
+        this.router.get(`${this.path}/one`, authenticationMiddleware, this.findOne);
+        this.router.put(`${this.path}/update`, authenticationMiddleware, this.update);
+        this.router.delete(`${this.path}`, authenticationMiddleware, this.delete);
     }
 
     private findAll = async (req: express.Request, res: express.Response, next: express.NextFunction) => {

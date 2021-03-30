@@ -17,8 +17,7 @@ class DonationController implements IBaseController {
     }
 
     private initializeRoutes() {
-        this.router.use(authenticationMiddleware)
-        this.router.post(`${this.path}/`, this.donation);
+        this.router.post(`${this.path}/`, authenticationMiddleware, this.donation);
     }
 
     private donation = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
