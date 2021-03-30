@@ -11,16 +11,18 @@ import { authenticationMiddleware } from '../authentication/authentication.middl
 class UserController implements IBaseController {
     public path = "/user";
     public router = express.Router();
+    public userRouter = express.Router();
 
     constructor() {
         this.initializeRoutes();
     }
 
     private initializeRoutes() {
-        this.router.get(`${this.path}`, authenticationMiddleware, this.findAll);
-        this.router.get(`${this.path}/one`, authenticationMiddleware, this.findOne);
-        this.router.put(`${this.path}/update`, authenticationMiddleware, this.update);
-        this.router.delete(`${this.path}`, authenticationMiddleware, this.delete);
+        this.router.use(this.path, authenticationMiddleware, this.userRouter);
+        this.userRouter.get('/',this.findAll);
+        this.userRouter.get('/one', this.findOne);
+        this.userRouter.put('/update', this.update);
+        this.userRouter.delete('/', this.delete);
     }
 
     private findAll = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
