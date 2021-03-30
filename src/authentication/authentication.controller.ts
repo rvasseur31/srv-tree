@@ -79,9 +79,9 @@ class AuthenticationController implements IBaseController {
         if (req.body.email) {
             AuthenticationService.getInstance()
                 .resetPassword(req.body.email)
-                .then((user) => {
+                .then(async (user) => {
                     transporter.sendMail(
-                        getMailOptions(
+                        await getMailOptions(
                             ["test@tree.com"],
                             "Changement de mot de passe",
                             { link: `http://localhost:4200/reset-password?token=${user.resetPasswordToken}` },
@@ -111,9 +111,9 @@ class AuthenticationController implements IBaseController {
         if (req.body.email) {
             AuthenticationService.getInstance()
                 .resetPassword(req.body.email)
-                .then((user) => {
+                .then(async (user) => {
                     transporter.sendMail(
-                        getMailOptions(
+                        await getMailOptions(
                             ["test@tree.com"],
                             "Changement de mot de passe",
                             { name: user.email },

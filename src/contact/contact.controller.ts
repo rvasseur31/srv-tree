@@ -28,9 +28,9 @@ class ContactController implements IBaseController {
         if (body.email && body.firstname && body.lastname && body.subject && body.message) {
             ContactService.getInstance()
                 .contact(body.email, body.firstname, body.lastname, body.subject, body.message)
-                .then((contact) => {
+                .then(async (contact) => {
                     transporter.sendMail(
-                        getMailOptions(
+                        await getMailOptions(
                             ["test@tree.com"],
                             "Nouveau message",
                             { subject: body.subject, message: body.message },

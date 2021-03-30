@@ -27,7 +27,8 @@ export class AuthenticationService {
     async register(email: string, password: string) {
         if (Utils.validateEmail(email)) {
             try {
-                const userToCreate: User = new User(email, bcrypt.hashSync(password, 10));
+                const encrypted = await bcrypt.hash(password, 10)
+                const userToCreate: User = new User(email, encrypted);
                 const user: User = await this.mananager.save(userToCreate);
                 return user;
             } catch (error) {
@@ -43,7 +44,7 @@ export class AuthenticationService {
             const user: User = await this.mananager.findOne(User, { email });
             if (user) {
                 try {
-                    if (bcrypt.compareSync(password, user.password)) {
+                    if (await bcrypt.compare(password, user.password)) {
                         return user;
                     } else {
                         throw new AuthError("Password doesn't match");
