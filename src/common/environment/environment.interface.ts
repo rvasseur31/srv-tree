@@ -10,5 +10,8 @@ export interface Environment {
         DB_USERNAME: string
         DB_PASSWORD: string
         DB_DATABASE: string
+    },
+    logger: {
+        level: string
     }
 }

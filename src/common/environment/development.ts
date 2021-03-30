@@ -11,5 +11,8 @@ export const development: Environment = {
         DB_USERNAME: "root",
         DB_PASSWORD: "",
         DB_DATABASE: "node"
+    },
+    logger: {
+        level: "silly"
     }
 }

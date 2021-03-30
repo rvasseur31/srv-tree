@@ -8,6 +8,7 @@ import { ContactService } from "./contact.service";
 import { getMailOptions } from "../mail/mail-options";
 import { transporter } from "../mail/transporter";
 import { SentMessageInfo } from "nodemailer";
+import { Logger } from "../common/log/logger";
 
 class ContactController implements IBaseController {
     public path = "/contact";
@@ -38,7 +39,7 @@ class ContactController implements IBaseController {
                         (error: Error, info: SentMessageInfo) => {
                             if (error) {
                                 customResponse = new CustomResponse(EStatus.FAIL, ECode.INTERNAL_SERVER_ERROR, "Email not sended", error);
-                                console.log(error);
+                                Logger.error(error);
                             } else {
                                 customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "Message successfully sended", contact);
                             }

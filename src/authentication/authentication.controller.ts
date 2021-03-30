@@ -11,6 +11,7 @@ import { transporter } from "../mail/transporter";
 import { getMailOptions } from "../mail/mail-options";
 import { SentMessageInfo } from "nodemailer";
 import { UserService } from "../user/user.service";
+import { Logger } from "../common/log/logger";
 
 class AuthenticationController implements IBaseController {
     public path = "/auth";
@@ -89,7 +90,7 @@ class AuthenticationController implements IBaseController {
                         (error: Error, info: SentMessageInfo) => {
                             if (error) {
                                 customResponse = new CustomResponse(EStatus.FAIL, ECode.INTERNAL_SERVER_ERROR, "Email not sended", error);
-                                console.log(error);
+                                Logger.error(error);
                             } else {
                                 customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "Email successfully sended", user);
                             }
@@ -120,7 +121,7 @@ class AuthenticationController implements IBaseController {
                         ),
                         (error: Error, info: SentMessageInfo) => {
                             if (error) {
-                                console.log(error);
+                                Logger.error(error);
                                 customResponse = new CustomResponse(EStatus.FAIL, ECode.INTERNAL_SERVER_ERROR, "Email not sended", error);
                             } else {
                                 customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "User password successfully updated", user);

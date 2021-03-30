@@ -9,6 +9,7 @@ import DonationController from "./donation/donation.controller";
 import DeviceController from './device/device.controller';
 import TreeController from "./tree/tree.controller";
 import { config } from './common/environment/config';
+import { Logger } from "./common/log/logger";
 
 createConnection(typeORMConfig)
     .then(async (_) => {
@@ -23,6 +24,6 @@ createConnection(typeORMConfig)
         app.listen();
     })
     .catch((error) => {
-        console.log("Error while connecting to the database", error);
+        Logger.error("Error while connecting to the database", error);
         return error;
     });
