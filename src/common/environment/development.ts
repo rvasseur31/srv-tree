@@ -2,7 +2,7 @@ import { Environment } from "./environment.interface";
 
 export const development: Environment = {
     app: {
-        APP_PORT: 80,
+        APP_PORT: 5000,
     },
     db: {
         DB_TYPE: "mysql",
