@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import cookieParser from 'cookie-parser';
 import IBaseController from "./common/controllers/base.controller.interface";
 import { errorMiddleware } from './errors/middlewares/error.middleware';
@@ -14,9 +15,13 @@ class App {
         this.app = express();
         this.port = port;
 
+        this.initializeCors();
         this.initializeMiddlewares();
         this.initializeApiControllers(apiControllers);
         this.initializeErrorMiddlewares();
+    }
+    private initializeCors() {
+        this.app.use(cors())
     }
 
     private initializeMiddlewares() {
