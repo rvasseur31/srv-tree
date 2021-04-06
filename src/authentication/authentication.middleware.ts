@@ -10,11 +10,13 @@ import { config } from "../common/environment/config";
 
 export const authenticationMiddleware = async (request: IRequestWithUser, response: Response, next: NextFunction) => {
     const manager = getConnection().manager;
-    const cookies = request.cookies;
-    if (cookies && cookies.Authorization) {
+    const headers = request.headers;
+    
+    if (headers && headers["authorization"]) {
         const secret = config.jwt.SECRET;
+        console.log(headers["authorization"])
         try {
-            const verificationResponse = jwt.verify(cookies.Authorization, secret) as IDataStoredInToken;
+            const verificationResponse = jwt.verify(headers["authorization"], secret) as IDataStoredInToken;
             const id = verificationResponse._id;
             const user = await manager.findOne(User, id);
             if (user) {
