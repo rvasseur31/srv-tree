@@ -9,7 +9,9 @@
     "prestart": "npm run build",
     "start:dev": "nodemon ./src/server.ts",
     "watch-typescript": "npm run copy-files && tsc -w",
+    "w-ts": "npm run watch-typescript",
     "watch-node": "nodemon dist/server.js",
+    "w-node": "npm run watch-node",
     "test": "echo \"Error: no test specified\" && exit 1",
     "copy-files": "npm run clean-mail-template && shx cp -R ./src/mail/templates ./dist/mail/templates",
     "clean-mail-template": "shx rm -rf dist/mail/templates"

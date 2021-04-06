@@ -7,6 +7,7 @@ import { EStatus } from "../types/status.enum";
 import { ECode } from "../types/code.enum";
 import { User } from "../user/user.entity";
 import { authenticationMiddleware } from '../authentication/authentication.middleware';
+import { IRequestWithUser } from '../common/interfaces/request-with-user.interface';
 
 class DonationController implements IBaseController {
     public path = "/donation";
@@ -20,11 +21,11 @@ class DonationController implements IBaseController {
         this.router.post(`${this.path}/`, authenticationMiddleware, this.donation);
     }
 
-    private donation = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    private donation = async (req: IRequestWithUser, res: express.Response, next: express.NextFunction) => {
         let customResponse: CustomResponse;
-        if (req.body.user_id && req.body.amount) {
+        if (req.user.id && req.body.amount) {
             DonationService.getInstance()
-                .newDonation(req.body.user_id, req.body.amount)
+                .newDonation(req.user.id, req.body.amount)
                 .then((user: User) => {
                     customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "donation done", user);
                     res.send(customResponse);

@@ -7,6 +7,7 @@ import { ECode } from "../types/code.enum";
 import { ParamError } from "../errors/param.error";
 import { User } from "../user/user.entity";
 import { authenticationMiddleware } from "../authentication/authentication.middleware";
+import { IRequestWithUser } from '../common/interfaces/request-with-user.interface';
 
 class DeviceController implements IBaseController {
     public path = "/device";
@@ -20,12 +21,12 @@ class DeviceController implements IBaseController {
         this.router.post(`${this.path}/add-device`, authenticationMiddleware, this.addDevice);
     }
 
-    private addDevice = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    private addDevice = async (req: IRequestWithUser, res: express.Response, next: express.NextFunction) => {
         const body = req.body;
         let customResponse: CustomResponse;
-        if (body.name && body.brand && body.year && body.state && body.type && body.user_id) {
+        if (body.name && body.brand && body.year && body.state && body.type && req.user.id) {
             DeviceService.getInstance()
-                .addDevice(body.name, body.brand, body.year, body.state, body.type, body.user_id)
+                .addDevice(body.name, body.brand, body.year, body.state, body.type, req.user.id)
                 .then((user: User) => {
                     customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "device sent", user);
                     res.send(customResponse);

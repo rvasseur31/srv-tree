@@ -7,6 +7,7 @@ import { ECode } from "../types/code.enum";
 import { User } from "../user/user.entity";
 import { UserService } from "./user.service";
 import { authenticationMiddleware } from '../authentication/authentication.middleware';
+import { IRequestWithUser } from '../common/interfaces/request-with-user.interface';
 
 class UserController implements IBaseController {
     public path = "/user";
@@ -38,11 +39,11 @@ class UserController implements IBaseController {
             });
     };
 
-    private findOne = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    private findOne = async (req: IRequestWithUser, res: express.Response, next: express.NextFunction) => {
         let customResponse: CustomResponse;
-        if (req.body.id) {
+        if (req.user.id) {
             UserService.getInstance()
-                .findOne(req.body.id)
+                .findOne(req.user.id)
                 .then((user: User) => {
                     customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "User fetched", user);
                     res.send(customResponse);
@@ -55,11 +56,11 @@ class UserController implements IBaseController {
         }
     };
 
-    private update = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    private update = async (req: IRequestWithUser, res: express.Response, next: express.NextFunction) => {
         let customResponse: CustomResponse;
-        if (req.body.id) {
+        if (req.user.id) {
             UserService.getInstance()
-                .update(req.body.id, req.body.data)
+                .update(req.user.id, req.body.data)
                 .then((user: User) => {
                     customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "User updated", user);
                     res.send(customResponse);
@@ -72,11 +73,11 @@ class UserController implements IBaseController {
         }
     };
 
-    private delete = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    private delete = async (req: IRequestWithUser, res: express.Response, next: express.NextFunction) => {
         let customResponse: CustomResponse;
-        if (req.body.id) {
+        if (req.user.id) {
             UserService.getInstance()
-                .delete(req.body.id)
+                .delete(req.user.id)
                 .then(() => {
                     customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "User deleted", null);
                     res.send(customResponse);
