@@ -8,6 +8,7 @@ import { Utils } from "../common/utils";
 import { UserService } from '../user/user.service';
 import { ITokenData } from "./token-data.interface";
 import { IDataStoredInToken } from "./data-stored-in-token.interface";
+import { config } from "../common/environment/config";
 
 export class AuthenticationService {
     private static INSTANCE: AuthenticationService;
@@ -90,7 +91,7 @@ export class AuthenticationService {
 
     public createToken(user: User): ITokenData {
         const expiresIn = 60 * 60; // an hour
-        const secret = "Passw0rd";
+        const secret = config.jwt.SECRET;
         const dataStoredInToken: IDataStoredInToken = {
             _id: user.id,
         };

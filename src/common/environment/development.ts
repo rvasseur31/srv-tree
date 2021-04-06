@@ -12,6 +12,9 @@ export const development: Environment = {
         DB_PASSWORD: "",
         DB_DATABASE: "node"
     },
+    jwt: {
+        SECRET: "Passw0rd"
+    },
     logger: {
         level: "silly"
     }

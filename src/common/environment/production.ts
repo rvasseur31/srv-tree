@@ -12,6 +12,9 @@ export const production: Environment = {
         DB_PASSWORD: "",
         DB_DATABASE: "node"
     },
+    jwt: {
+        SECRET: "mon-super-mot-de-passe-securise"
+    },
     logger: {
         level: "info"
     }

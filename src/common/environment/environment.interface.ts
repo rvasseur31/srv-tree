@@ -1,4 +1,3 @@
-import { ConnectionOptions } from 'typeorm';
 export interface Environment {
     app: {
         APP_PORT: number
@@ -10,6 +9,9 @@ export interface Environment {
         DB_USERNAME: string
         DB_PASSWORD: string
         DB_DATABASE: string
+    },
+    jwt: {
+        SECRET: string
     },
     logger: {
         level: string
