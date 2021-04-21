@@ -35,10 +35,10 @@ class AuthenticationController implements IBaseController {
             AuthenticationService.getInstance()
                 .register(req.body.email, req.body.password, req.body.firstName, req.body.lastName)
                 .then(async (user) => {
-                    customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "User successfully created", user);
                     const tokenData = AuthenticationService.getInstance().createToken(user);
                     res.setHeader("Set-Cookie", [this.createCookie(tokenData)]);
-                    await UserService.getInstance().update(user.id, {token : tokenData.token})
+                    user = await UserService.getInstance().update(user.id, {token : tokenData.token})
+                    customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "User successfully created", user);
                     res.send(customResponse);
                 })
                 .catch((error) => {
@@ -55,10 +55,10 @@ class AuthenticationController implements IBaseController {
             AuthenticationService.getInstance()
                 .login(req.body.email, req.body.password)
                 .then(async (user: User) => {
-                    customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "User successfully logged", user);
                     const tokenData = AuthenticationService.getInstance().createToken(user);
                     res.setHeader("Set-Cookie", [this.createCookie(tokenData)]);
-                    await UserService.getInstance().update(user.id, {token : tokenData.token})
+                    user = await UserService.getInstance().update(user.id, {token : tokenData.token})
+                    customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "User successfully logged", user);
                     res.send(customResponse);
                 })
                 .catch((error) => {
