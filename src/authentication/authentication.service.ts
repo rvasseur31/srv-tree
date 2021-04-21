@@ -25,11 +25,11 @@ export class AuthenticationService {
         return this.INSTANCE;
     }
 
-    async register(email: string, password: string) {
+    async register(email: string, password: string, firstName: string, lastName: string) {
         if (Utils.validateEmail(email)) {
             try {
                 const encrypted = await bcrypt.hash(password, 10)
-                const userToCreate: User = new User(email, encrypted);
+                const userToCreate: User = new User(email, encrypted, firstName, lastName);
                 const user: User = await this.mananager.save(userToCreate);
                 return user;
             } catch (error) {

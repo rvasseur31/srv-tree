@@ -60,8 +60,10 @@ export class User implements IUser {
     @OneToMany(type => Device, device => device.user)
     devices: Device[];
 
-    public constructor(email?: string, password?: string) {
+    public constructor(email: string, password: string, firstName: string, lastName: string) {
         this.email = email;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 }

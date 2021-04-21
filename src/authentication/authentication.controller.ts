@@ -31,9 +31,9 @@ class AuthenticationController implements IBaseController {
 
     private register = async (req: Request, res: Response, next: NextFunction) => {
         let customResponse: CustomResponse;
-        if (req.body.email && req.body.password) {
+        if (req.body.email && req.body.password, req.body.firstName, req.body.lastName) {
             AuthenticationService.getInstance()
-                .register(req.body.email, req.body.password)
+                .register(req.body.email, req.body.password, req.body.firstName, req.body.lastName)
                 .then(async (user) => {
                     customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "User successfully created", user);
                     const tokenData = AuthenticationService.getInstance().createToken(user);
