@@ -25,9 +25,9 @@ class ContactController implements IBaseController {
     private contact = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         let customResponse: CustomResponse;
         const body = req.body;
-        if (body.email && body.firstname && body.lastname && body.subject && body.message) {
+        if (body.email && body.firstName && body.lastName && body.subject && body.message) {
             ContactService.getInstance()
-                .contact(body.email, body.firstname, body.lastname, body.subject, body.message)
+                .contact(body.email, body.firstName, body.lastName, body.subject, body.message)
                 .then(async (contact) => {
                     transporter.sendMail(
                         await getMailOptions(

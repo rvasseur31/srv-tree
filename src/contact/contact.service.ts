@@ -16,8 +16,8 @@ export class ContactService {
         return this.INSTANCE;
     }
 
-    async contact(email: string, firstname: string, lastname: string, subject: string, content: string) {
-        const message: Contact = new Contact(email, firstname, lastname, subject, content);
+    async contact(email: string, firstName: string, lastName: string, subject: string, content: string) {
+        const message: Contact = new Contact(email, firstName, lastName, subject, content);
         return await this.manager.save(message);
     }
 }

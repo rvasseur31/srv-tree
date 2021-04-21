@@ -15,12 +15,12 @@ export class User implements IUser {
     @Column({
         nullable: true,
     })
-    public firstname: string;
+    public firstName: string;
 
     @Column({
         nullable: true,
     })
-    public lastname: string;
+    public lastName: string;
 
     @Column({
         default: UserRole.USER,
