@@ -22,6 +22,7 @@ class UserController implements IBaseController {
         this.router.use(this.path, authenticationMiddleware, this.userRouter);
         this.userRouter.get('/',this.findAll);
         this.userRouter.get('/one', this.findOne);
+        this.userRouter.post(`/data/:id`, this.findData);
         this.userRouter.put('/update', this.update);
         this.userRouter.delete('/', this.delete);
     }
@@ -37,6 +38,23 @@ class UserController implements IBaseController {
             .catch((error) => {
                 next(error);
             });
+    };
+
+    private findData = async (req: IRequestWithUser, res: express.Response, next: express.NextFunction) => {
+        let customResponse: CustomResponse;
+        if (req.params) {
+            UserService.getInstance()
+                .findData(req.body)
+                .then((data) => {
+                    customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "Data fetched", data);
+                    res.send(customResponse);
+                })
+                .catch((error) => {
+                    next(error);
+                });
+        } else {
+            next(new ParamError("id must be specified"));
+        }
     };
 
     private findOne = async (req: IRequestWithUser, res: express.Response, next: express.NextFunction) => {

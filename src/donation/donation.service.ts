@@ -24,8 +24,10 @@ export class DonationService {
             const dateTime = new Date();
             const donation: Donation = new Donation(amount, dateTime, user);
             await this.repository.save(donation);
+            let donations: Donation[] = [];
+            if(user.donations) donations = [donation]
             const plantedTree = user.plantedTree + Math.trunc(amount / 15);
-            return await UserService.getInstance().update(user_id, {plantedTree});
+            return await UserService.getInstance().update(user_id, {plantedTree: plantedTree, donations: donations});
         } catch (error) {
             throw error;
         }

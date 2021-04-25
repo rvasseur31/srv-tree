@@ -25,9 +25,18 @@ export class UserService {
         }
     }
 
+    async findData(id: number) {
+        try {
+            const user: User = await this.manager.findOne(User, id, { relations: ["donations", "devices"] });
+            return {donations: user.donations, devices: user.devices, plantedTree: user.plantedTree};
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async findOne(id: number) {
         try {
-            const user: User = await this.manager.findOne(User, id, { relations: ["donations"] });
+            const user: User = await this.manager.findOne(User, id, { relations: ["donations", "devices"] });
             return user;
         } catch (error) {
             throw error;
