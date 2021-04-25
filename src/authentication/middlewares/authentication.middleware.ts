@@ -1,12 +1,12 @@
-import { IRequestWithUser } from "../common/interfaces/request-with-user.interface";
+import { IRequestWithUser } from "../../common/interfaces/request-with-user.interface";
 import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
-import { User } from '../user/user.entity';
+import { User } from '../../user/user.entity';
 import { getConnection } from "typeorm";
-import { WrongAuthenticationTokenException } from "../errors/wrong-authentication-token.exeption";
-import { AuthenticationTokenMissingException } from "../errors/authentication-token-missing.exeption";
-import { IDataStoredInToken } from "./data-stored-in-token.interface";
-import { config } from "../common/environment/config";
+import { WrongAuthenticationTokenException } from "../../errors/wrong-authentication-token.exeption";
+import { AuthenticationTokenMissingException } from "../../errors/authentication-token-missing.exeption";
+import { IDataStoredInToken } from "../data-stored-in-token.interface";
+import { config } from "../../common/environment/config";
 
 export const authenticationMiddleware = async (request: IRequestWithUser, response: Response, next: NextFunction) => {
     const manager = getConnection().manager;

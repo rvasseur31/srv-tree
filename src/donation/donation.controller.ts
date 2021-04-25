@@ -6,7 +6,7 @@ import { DonationService } from "./donation.service";
 import { EStatus } from "../types/status.enum";
 import { ECode } from "../types/code.enum";
 import { User } from "../user/user.entity";
-import { authenticationMiddleware } from '../authentication/authentication.middleware';
+import { authenticationMiddleware } from '../authentication/middlewares/authentication.middleware';
 import { IRequestWithUser } from '../common/interfaces/request-with-user.interface';
 
 class DonationController implements IBaseController {

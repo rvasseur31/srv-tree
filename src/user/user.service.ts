@@ -1,3 +1,4 @@
+import { Logger } from './../common/log/logger';
 import { User } from "../user/user.entity";
 import { EntityManager, getConnection } from "typeorm";
 
@@ -18,7 +19,7 @@ export class UserService {
 
     async findAll() {
         try {
-            const users: User[] = await this.manager.find(User, { relations: ["donations"] });
+            const users: User[] = await this.manager.find(User, { relations: ["donations", "devices"] });
             return users;
         } catch (error) {
             throw error;

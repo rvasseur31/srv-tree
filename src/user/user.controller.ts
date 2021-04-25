@@ -6,8 +6,9 @@ import { EStatus } from "../types/status.enum";
 import { ECode } from "../types/code.enum";
 import { User } from "../user/user.entity";
 import { UserService } from "./user.service";
-import { authenticationMiddleware } from '../authentication/authentication.middleware';
+import { authenticationMiddleware } from '../authentication/middlewares/authentication.middleware';
 import { IRequestWithUser } from '../common/interfaces/request-with-user.interface';
+import { adminAuthenticationMiddleware } from '../authentication/middlewares/admin-authentication.middleware';
 
 class UserController implements IBaseController {
     public path = "/user";
@@ -20,11 +21,11 @@ class UserController implements IBaseController {
 
     private initializeRoutes() {
         this.router.use(this.path, authenticationMiddleware, this.userRouter);
-        this.userRouter.get('/',this.findAll);
-        this.userRouter.get('/one', this.findOne);
-        this.userRouter.post(`/data/:id`, this.findData);
-        this.userRouter.put('/update', this.update);
-        this.userRouter.delete('/', this.delete);
+        this.userRouter.post(`/data`, this.findData);
+        this.userRouter.get('/', adminAuthenticationMiddleware, this.findAll);
+        this.userRouter.get('/one', adminAuthenticationMiddleware, this.findOne);
+        this.userRouter.put('/update', adminAuthenticationMiddleware, this.update);
+        this.userRouter.delete('/', adminAuthenticationMiddleware, this.delete);
     }
 
     private findAll = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -44,7 +45,7 @@ class UserController implements IBaseController {
         let customResponse: CustomResponse;
         if (req.params) {
             UserService.getInstance()
-                .findData(req.body)
+                .findData(req.user.id)
                 .then((data) => {
                     customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "Data fetched", data);
                     res.send(customResponse);
