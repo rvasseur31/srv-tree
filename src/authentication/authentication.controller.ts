@@ -84,7 +84,7 @@ class AuthenticationController implements IBaseController {
                         await getMailOptions(
                             ["test@tree.com"],
                             "Changement de mot de passe",
-                            { link: `http://localhost:4200/reset-password?token=${user.resetPasswordToken}` },
+                            { link: `http://localhost:4200/reset-password?token=${user.resetPasswordToken}`, name: user.firstName },
                             "./templates/requestResetPassword.handlebars"
                         ),
                         (error: Error, info: SentMessageInfo) => {
@@ -94,9 +94,10 @@ class AuthenticationController implements IBaseController {
                             } else {
                                 customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "Email successfully sended", user);
                             }
+                            res.send(customResponse);
                         }
                     );
-                    res.send(customResponse);
+                    
                 })
                 .catch((error) => {
                     next(error);
@@ -108,16 +109,16 @@ class AuthenticationController implements IBaseController {
 
     private updatePassword = async (req: Request, res: Response, next: NextFunction) => {
         let customResponse: CustomResponse;
-        if (req.body.email) {
+        if (req.body.token, req.body.password) {
             AuthenticationService.getInstance()
-                .resetPassword(req.body.email)
+                .updatePassword(req.body.token, req.body.password)
                 .then(async (user) => {
                     transporter.sendMail(
                         await getMailOptions(
                             ["test@tree.com"],
                             "Changement de mot de passe",
-                            { name: user.email },
-                            "./templates/requestResetPassword.handlebars"
+                            { name: user.firstName },
+                            "./templates/resetPassword.handlebars"
                         ),
                         (error: Error, info: SentMessageInfo) => {
                             if (error) {
@@ -126,9 +127,10 @@ class AuthenticationController implements IBaseController {
                             } else {
                                 customResponse = new CustomResponse(EStatus.SUCCESS, ECode.OK, "User password successfully updated", user);
                             }
+                            res.send(customResponse);
                         }
                     );
-                    res.send(customResponse);
+                    
                 })
                 .catch((error) => {
                     next(error);
